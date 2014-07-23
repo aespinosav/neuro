@@ -20,7 +20,7 @@ def edit_length_metric(u, v, q = 1):
   
     dist = G[-1, -1]
   
-    return G
+    return dist
   
   
   
