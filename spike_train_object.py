@@ -94,17 +94,64 @@ class SpikeTrain():
         for letters. However this can be specified.
         """
         if time_resolution is None:
-            time_resolution = self.letter_width/2.0 # Sampling nyquist...
+            if self.letter_width is not None:
+                time_resolution = self.letter_width/2.0 # Sampling nyquist...
+            else:
+                time_resolution = min(self.spiking_times[1:] - self.spiking_times[:-1])/2.0
         
         self.t = np.arange(self.start_time, self.end_time + time_resolution, time_resolution)
         self.t_res = time_resolution  #time resoution for t array (just to have it explicitly)
         
+    def make_hist(self):
+        """
+        Makes a histogram of the spiking times, for bins defined by the array
+        self.t, by default it ensures that there is at most one count per bin.
+        this histogram will be used to calculate the kernel metric.
+        """
+        h = np.histogram(self.spiking_times, self.t)
+        self.hist = h
+        
+    def kernelise(self, kernel, bandwidth):
+        """
+        Returns an array where the kernels have been added for 
+        the spiking times.
+        
+        kernel - kernel function that takes an array, a value and a bandwidth as arguments
+        """
+        
+        self.make_hist()
+        
+        arglist = np.argwhere(self.hist[0]) #arg list of nonzerom times
+        arglist = arglist.reshape(len(arglist),)
+        
+        self.kern_function = np.zeros(len(self.t))
+        for i in arglist:
+            kernel(self.t - self.t[i], self.kern_function, bandwidth)
+                    
     #def __repr__(self):
         #string = self.spiking_times.__repr__()
         #new_string = "SpikeTrain"+string[5:]
         #return new_string
+
+    def __getitem__(self, key):
+        return self.spiking_times[key]
+        
+    def __len__(self):
+        return len(self.spiking_times)    
     
     def __str__(self):
         string = self.spiking_times.__repr__()
         new_string = "\t"+string[6:-1]
         return new_string
+
+        
+        
+def boxcar(t, vals, bandwidth):
+
+    N = len(t)
+    
+    for i in range(N):
+        if t[i] > -bandwidth/2.0 and t[i] < bandwidth/2.0:
+            vals[i] += 1.0/bandwidth
+            
+    return vals
