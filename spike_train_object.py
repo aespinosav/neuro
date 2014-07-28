@@ -126,7 +126,8 @@ class SpikeTrain():
         
         self.kern_function = np.zeros(len(self.t))
         for i in arglist:
-            kernel(self.t - self.t[i], self.kern_function, bandwidth)
+            #kernel(self.t - self.t[i], self.kern_function, bandwidth) #works for boxcar
+            kernel(self.t, i, self.kern_function, bandwidth)
                     
     #def __repr__(self):
         #string = self.spiking_times.__repr__()
@@ -155,3 +156,15 @@ def boxcar(t, vals, bandwidth):
             vals[i] += 1.0/bandwidth
             
     return vals
+    
+def boxcar2(t, i, vals, bandwidth):
+    dt = t[1] - t[0]
+    bins_in_band = int(bandwidth / dt)
+    
+    if bins_in_band % 2 == 0:
+        bins_in_band -= 1 #if number of bins is even, we reduce them by 1 (we are effectively rounding down...)
+        
+    lower = max(0, i - int(bins_in_band/2.0)) #dont go below index 0
+    upper = i + int(bins_in_band/2.0)
+    
+    vals[lower:upper+1] += 1.0/bandwidth
