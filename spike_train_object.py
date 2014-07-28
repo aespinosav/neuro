@@ -94,7 +94,7 @@ class SpikeTrain():
         for letters. However this can be specified.
         """
         if time_resolution is None:
-            time_resolution = self.letter_width
+            time_resolution = self.letter_width/2.0 # Sampling nyquist...
         
         self.t = np.arange(self.start_time, self.end_time + time_resolution, time_resolution)
         self.t_res = time_resolution  #time resoution for t array (just to have it explicitly)
