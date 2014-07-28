@@ -29,7 +29,8 @@ class SpikeTrain():
         self.words = None
         self.word_width = None     #time resolution of words
         self.letters_per_word = None
-        self.t = None              #array of time to be used for kernel metric calculation
+        self.t = None              #array of time to be used for kernel metric calculation#
+        self.t_res = None
         
     def make_letters(self, letter_interval, start_time=None, experiment_time=None):
         """
@@ -96,7 +97,7 @@ class SpikeTrain():
             time_resolution = self.letter_width
         
         self.t = np.arange(self.start_time, self.end_time + time_resolution, time_resolution)
-        
+        self.t_res = time_resolution  #time resoution for t array (just to have it explicitly)
         
     #def __repr__(self):
         #string = self.spiking_times.__repr__()
