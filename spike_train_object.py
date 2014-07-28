@@ -133,6 +133,25 @@ class SpikeTrain():
         #string = self.spiking_times.__repr__()
         #new_string = "SpikeTrain"+string[5:]
         #return new_string
+        
+    def shift_start_time(self, start=0, end=None):
+        """
+        Change the "absolute" value of the start time.
+        Rewrites self.spiking_times and self.t (if it has been created)
+        
+        Use this method to make equivalent spike trains.
+        """
+        if end is None:
+            end = self.end_time
+        else:
+            self.end_time = end
+        
+        self.spiking_times -= self.spiking_times[0] + start
+        
+        if self.t is not None:
+            self.t = np.arange(start, self.end_time + self.t_res, self.t_res)
+        
+        
 
     def __getitem__(self, key):
         return self.spiking_times[key]
@@ -147,19 +166,23 @@ class SpikeTrain():
 
         
         
-def boxcar(t, vals, bandwidth):
+#def boxcar(t, vals, bandwidth):
 
-    N = len(t)
+    #N = len(t)
     
-    for i in range(N):
-        if t[i] > -bandwidth/2.0 and t[i] < bandwidth/2.0:
-            vals[i] += 1.0/bandwidth
+    #for i in range(N):
+        #if t[i] > -bandwidth/2.0 and t[i] < bandwidth/2.0:
+            #vals[i] += 1.0/bandwidth
             
-    return vals
+    #return vals
     
-def boxcar2(t, i, vals, bandwidth):
+def boxcar(t, i, vals, bandwidth):
     dt = t[1] - t[0]
     bins_in_band = int(bandwidth / dt)
+    
+    if bins_in_band <= 1:
+        print "ERROR: Bandwidth must be higher"
+        return
     
     if bins_in_band % 2 == 0:
         bins_in_band -= 1 #if number of bins is even, we reduce them by 1 (we are effectively rounding down...)
