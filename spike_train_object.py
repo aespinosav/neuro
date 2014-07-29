@@ -152,31 +152,25 @@ class SpikeTrain():
             self.t = np.arange(start, self.end_time + self.t_res, self.t_res)
         
         
-
     def __getitem__(self, key):
         return self.spiking_times[key]
         
     def __len__(self):
-        return len(self.spiking_times)    
+        return len(self.spiking_times)
     
     def __str__(self):
         string = self.spiking_times.__repr__()
         new_string = "\t"+string[6:-1]
         return new_string
 
-        
-        
-#def boxcar(t, vals, bandwidth):
 
-    #N = len(t)
-    
-    #for i in range(N):
-        #if t[i] > -bandwidth/2.0 and t[i] < bandwidth/2.0:
-            #vals[i] += 1.0/bandwidth
-            
-    #return vals
-    
 def boxcar(t, i, vals, bandwidth):
+    """
+    Boxcar/Uniform kernel
+    
+    Does not return anything, but updates the array passed
+    as vals as many times as needed.
+    """
     dt = t[1] - t[0]
     bins_in_band = int(bandwidth / dt)
     
@@ -191,3 +185,19 @@ def boxcar(t, i, vals, bandwidth):
     upper = i + int(bins_in_band/2.0)
     
     vals[lower:upper+1] += 1.0/bandwidth
+    
+def exp_kernel(t, i, vals, bandwidth):
+    """
+    Exponential kernel:
+    (1/tau)exp(-t/tau), where tau is passed as the bandwidth
+    
+    Does not return anything, but updates the array passed as vals
+    """
+    tau = bandwidth
+    vals[i:] += np.exp(-(t[i:] - t[i])/tau)/tau
+    
+    
+    
+    
+    
+    
