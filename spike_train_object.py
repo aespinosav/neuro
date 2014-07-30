@@ -112,7 +112,8 @@ class SpikeTrain():
         """
         h = np.histogram(self.spiking_times, self.t)
         self.hist = h
-        self.arglist = np.argwhere(self.hist[0]).reshape(len(arglist),)
+        self.arglist = np.argwhere(self.hist[0])
+        self.arglist = self.arglist.flatten()
         
     def kernelise(self, kernel, bandwidth):
         """
@@ -214,7 +215,7 @@ def make_exp_kernel(spiking_times, tau):
     
 def new_neg_exp(x):
     y = np.exp(-x)
-    if isinstance(x, ndarray):
+    if isinstance(x, np.ndarray):
         y[y>1] = 0
     else:
         if y < 0:
