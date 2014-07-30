@@ -107,9 +107,12 @@ class SpikeTrain():
         Makes a histogram of the spiking times, for bins defined by the array
         self.t, by default it ensures that there is at most one count per bin.
         this histogram will be used to calculate the kernel metric.
+        
+        This function also compiles a list of indices for the spikes in the time array
         """
         h = np.histogram(self.spiking_times, self.t)
         self.hist = h
+        self.arglist = np.argwhere(self.hist[0]).reshape(len(arglist),)
         
     def kernelise(self, kernel, bandwidth):
         """
@@ -121,11 +124,13 @@ class SpikeTrain():
         
         self.make_hist()
         
-        arglist = np.argwhere(self.hist[0]) #arg list of nonzerom times
-        arglist = arglist.reshape(len(arglist),)
+        #arglist = np.argwhere(self.hist[0]) #arg list of nonzerom times
+        #arglist = arglist.reshape(len(arglist),)
+        
+        
         
         self.kern_function = np.zeros(len(self.t))
-        for i in arglist:
+        for i in self.arglist:
             #kernel(self.t - self.t[i], self.kern_function, bandwidth) #works for boxcar
             kernel(self.t, i, self.kern_function, bandwidth)
                     
@@ -198,6 +203,21 @@ def exp_kernel(t, i, vals, bandwidth):
     
     
     
+def make_exp_kernel(spiking_times, tau):
+    """
+    Returns a function that will calculate the value of the kernel for the array passed
     
+    tau - bandwidth of kernel
+    """
+    kernelised_function = lambda x: np.sum(np.array( [(1.0/tau)*new_neg_exp((x - i)/tau) for i in spiking_times] ), axis=0)
+    return kernelised_function
     
-    
+def new_neg_exp(x):
+    y = np.exp(-x)
+    if isinstance(x, ndarray):
+        y[y>1] = 0
+    else:
+        if y < 0:
+            y = 0
+    return y
+        
