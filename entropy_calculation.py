@@ -2,7 +2,6 @@
 from parsing import *
 
 spike_times = np.loadtxt("Sfly01508SpikeTimes.txt")
-
 repeated_exp = split_into_runs(spike_times, 200, 1000)
 
 experiments_letters = [convert_to_letters(i, 0.003, int(i[0]), 5) for i in repeated_exp]

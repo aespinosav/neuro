@@ -55,3 +55,4 @@ def kernelise(self, kernel):
         y += kernel(y, t, i, bandwidth)
         
     self.kern_function = y
+    

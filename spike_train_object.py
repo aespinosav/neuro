@@ -128,8 +128,6 @@ class SpikeTrain():
         #arglist = np.argwhere(self.hist[0]) #arg list of nonzerom times
         #arglist = arglist.reshape(len(arglist),)
         
-        
-        
         self.kern_function = np.zeros(len(self.t))
         for i in self.arglist:
             #kernel(self.t - self.t[i], self.kern_function, bandwidth) #works for boxcar
