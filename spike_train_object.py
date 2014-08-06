@@ -220,3 +220,18 @@ def new_neg_exp(x):
             y = 0
     return y
         
+def distance(s1, s2):
+    dif = s1.kern_function - s2.kern_function
+    dif = dif**2
+    dif = sum(dif)/len(s1.t)
+    dif = np.sqrt(dif)
+    
+    return dif
+    
+class DistMatrix():
+    def __init__(self, list_of_spike_trains):
+        self.ST = list_of_spike_trains
+
+    def __call__(self, i,j):
+        d = distance(self.ST[i], self.ST[j])
+        return d

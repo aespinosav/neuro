@@ -15,8 +15,11 @@ do these steps manually.
 spike_times = np.loadtxt("./data/Sfly01508SpikeTimes.txt")
 repeated_exp = split_into_runs(spike_times, 200, 1000)
 
-spike_trains = [SpikeTrain(i, end_time=5) for i in repeated_exp]
+spike_trains = [SpikeTrain(i,start_time=0, end_time=5) for i in repeated_exp]
 
 for s in spike_trains:
     s.shift_start_time(0)
     s.make_time_array(time_resolution=0.0001) #micro second resolution
+    s.kernelise(boxcar, 0.03)
+    
+dist_matrix = [[distance(spike_trains[i], spike_trains[j]) for i in range(len(spike_trains))] for j in range(len(spike_trains))]
