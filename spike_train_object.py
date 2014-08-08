@@ -7,6 +7,9 @@ class SpikeTrain():
     This object contains the raw spike times, as well as the
     methods to partition into words and letters. It will also 
     contain the time resolution for letters and words.
+    
+    NOTE: If data list is empty, spike train should still work,
+    must fix!!!!!!
     """
     def __init__(self, data, start_time=None, end_time=None):
         """
@@ -201,7 +204,6 @@ def exp_kernel(t, i, vals, bandwidth):
     vals[i:] += np.exp(-(t[i:] - t[i])/tau)/tau
     
     
-    
 def make_exp_kernel(spiking_times, tau):
     """
     Returns a function that will calculate the value of the kernel for the array passed
@@ -220,13 +222,32 @@ def new_neg_exp(x):
             y = 0
     return y
         
-def distance(s1, s2):
-    dif = s1.kern_function - s2.kern_function
-    dif = dif**2
-    dif = sum(dif)/len(s1.t)
-    dif = np.sqrt(dif)
+#def distance(s1, s2):
+    #dif = s1.kern_function - s2.kern_function
+    #dif = dif**2
+    #dif = sum(dif)/len(s1.t)
+    #dif = np.sqrt(dif)
     
-    return dif
+    #return dif
+    
+def distance(s1, s2, tau=0.03):
+    """
+    Calculates the distance between spike trains
+    using the analytic expression for the spike-train
+    metric.
+    
+    Using this function, one can skip the kernelising 
+    stage all together, but the kernel bandwidth must still be
+    specified
+    """
+    
+    term1 = sum(np.array([[ np.exp(-abs(s1[i] - s1[j])/tau)  for i in range(len(s1))] for j in range(len(s1))]).flatten())
+    term2 = sum(np.array([[ np.exp(-abs(s2[i] - s2[j])/tau)  for i in range(len(s2))] for j in range(len(s2))]).flatten())
+    term3 = sum(np.array([[ np.exp(-abs(s1[i] - s2[j])/tau)  for i in range(len(s1))] for j in range(len(s2))]).flatten())
+     
+    d = (term1 + term2 - 2*term3)/(2*tau)
+     
+    return d
     
 class DistMatrix():
     def __init__(self, list_of_spike_trains):
