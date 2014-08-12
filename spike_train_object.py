@@ -230,24 +230,39 @@ def new_neg_exp(x):
     
     #return dif
     
+#def distance(s1, s2, tau=0.03):
+    #"""
+    #Calculates the distance between spike trains
+    #using the analytic expression for the spike-train
+    #metric.
+    
+    #Using this function, one can skip the kernelising 
+    #stage all together, but the kernel bandwidth must still be
+    #specified
+    #"""
+    
+    #term1 = sum(np.array([[ np.exp(-abs(s1[i] - s1[j])/tau)  for i in range(len(s1))] for j in range(len(s1))]).flatten())
+    #term2 = sum(np.array([[ np.exp(-abs(s2[i] - s2[j])/tau)  for i in range(len(s2))] for j in range(len(s2))]).flatten())
+    #term3 = sum(np.array([[ np.exp(-abs(s1[i] - s2[j])/tau)  for i in range(len(s1))] for j in range(len(s2))]).flatten())
+     
+    #d = (term1 + term2 - 2*term3)/(2*tau)
+     
+    #return d
+    
 def distance(s1, s2, tau=0.03):
-    """
-    Calculates the distance between spike trains
-    using the analytic expression for the spike-train
-    metric.
+
+    term1 = np.array([[ -abs(s1[i] - s1[j])/tau  for i in range(len(s1))] for j in range(len(s1))]).flatten()
+    term2 = np.array([[ -abs(s2[i] - s2[j])/tau  for i in range(len(s2))] for j in range(len(s2))]).flatten()
+    term3 = np.array([[ -abs(s1[i] - s2[j])/tau  for i in range(len(s1))] for j in range(len(s2))]).flatten()
     
-    Using this function, one can skip the kernelising 
-    stage all together, but the kernel bandwidth must still be
-    specified
-    """
+    term1 = np.exp(term1)
+    term2 = np.exp(term2)
+    term3 = np.exp(term3)
     
-    term1 = sum(np.array([[ np.exp(-abs(s1[i] - s1[j])/tau)  for i in range(len(s1))] for j in range(len(s1))]).flatten())
-    term2 = sum(np.array([[ np.exp(-abs(s2[i] - s2[j])/tau)  for i in range(len(s2))] for j in range(len(s2))]).flatten())
-    term3 = sum(np.array([[ np.exp(-abs(s1[i] - s2[j])/tau)  for i in range(len(s1))] for j in range(len(s2))]).flatten())
-     
-    d = (term1 + term2 - 2*term3)/(2*tau)
-     
+    d = (sum(term1) + sum(term2) -2*sum(term3))/(2*tau)
+    
     return d
+
     
 class DistMatrix():
     def __init__(self, list_of_spike_trains):
