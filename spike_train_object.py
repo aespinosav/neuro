@@ -259,15 +259,34 @@ def distance(s1, s2, tau=0.03):
     term2 = np.exp(term2)
     term3 = np.exp(term3)
     
-    d = (sum(term1) + sum(term2) -2*sum(term3))/(2*tau)
+    d = (sum(term1) + sum(term2) -2*sum(term3))/(2*tau) 
     
     return d
 
     
-class DistMatrix():
-    def __init__(self, list_of_spike_trains):
-        self.ST = list_of_spike_trains
+def make_distance_matrix(spike_train_list, tau=0.03):
+    """
+    Makes a distance matrix for the responses given 
+    in spike_train_list.
+    """
+    no_stim = len(spike_train_list)
+    
+    rows = [[distance(spike_train_list[j], spike_train_list[k], tau) 
+             for k in range(j+1, no_stim)] for j in range(no_stim-1)]
+    
+    matrix = np.zeros(no_stim*no_stim).reshape(no_stim,no_stim)
+    for i in range(no_stim-1):
+        matrix[i,i+1:] = rows[i]
 
-    def __call__(self, i,j):
-        d = distance(self.ST[i], self.ST[j])
-        return d
+    matrix += matrix.T
+    
+    return matrix
+
+    
+#class DistMatrix():
+    #def __init__(self, list_of_spike_trains):
+        #self.ST = list_of_spike_trains
+
+    #def __call__(self, i,j):
+        #d = distance(self.ST[i], self.ST[j])
+        #return d
