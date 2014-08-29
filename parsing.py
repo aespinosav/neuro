@@ -29,6 +29,35 @@ def split_into_runs(spike_data, number_of_runs, total_length):
     return np.array(array_of_runs)
 
 
+def split_into_stimuli(run, time_of_run, number_of_stim):
+    """
+    Splits a run into smaller sectiosn corresponding to
+    an "individual" stimulus. As opposed to the split_into_runs
+    function it will keep empty lists.
+
+    This function assumes that all experiment time has been accounted for.
+
+    run - np array of spike times
+    time_of_run - length of run in seconds
+    number_of_stim - number of stimuli to split run into
+    """
+
+    length_of_stim = float(time_of_run)/number_of_stim
+    array_of_responses = []
+
+    for i in range(number_of_stim):
+        start = i*length_of_stim
+        stop = start + length_of_stim
+
+        stim_data = run[(start <= run)&(run <= stop)]
+
+        array_of_responses.append(stim_data)
+        array_of_runs = np.array(array_of_responses)
+
+    return array_of_runs
+
+
+
 def convert_to_letters(spike_data, letter_interval, start_time, experiment_time):
     """
     Parses spike time data into letters.
@@ -54,23 +83,23 @@ def convert_to_letters(spike_data, letter_interval, start_time, experiment_time)
 
 
 
-def convert_to_words(letter_exp, word_length):
+def convert_to_words(letter_exp, letters_per_word):
     """
     Splits data that has been converted into letters into words
     returns a list of words
 
     letter_exp - an array or list of letters for an experiment
-    word_length - number of letters in a word
+    letters_per_word - number of letters in a word
     """
 
-    number_of_words = int(len(letter_exp) / float(word_length))
+    number_of_words = int(len(letter_exp) / float(letters_per_word))
 
     word_list = []
 
     for i in range(number_of_words):
         current_word = ''
-        for j in range(word_length):
-            current_word += str(letter_exp[i*word_length + j])
+        for j in range(letters_per_word):
+            current_word += str(letter_exp[i*letters_per_word + j])
 
         word_list.append(current_word)
 
