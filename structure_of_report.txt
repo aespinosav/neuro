@@ -1,0 +1,51 @@
+Report Structure (neuroscience project)
+=======================================
+
+Introduction
+------------
+
+- Neural Coding
+- Information theory applied to neural coding
+	- What can we learn about the brain from using information theory
+- Bandwidth of information in spike trains
+
+- Experiment description
+- Physiological explanation
+
+Spike Train Metrics
+-------------------
+
+- Constructing a spike train space (metric non-coordinate space multidimensional)
+- Comparing spike trains (coding for stimuli)
+- Differetn types of analysing spike train data (discretising vs continuous time)
+- Victor-Purpura metric (edit metric)
+- Kernel metrics
+
+Calculating Mutual Information
+------------------------------
+
+- Estimating mutual information (between stimulus and response)
+- Discrete methods (making words from spike trains, Bialek et al)
+- Continuous space methods (Kernel density estimation, nearest neighbour approaches)
+(- Bayesian entropy method)
+
+Comparison on a data set (from seminal paper) (RESULTS)
+-------------------------------------------------------
+
+- Results for discrete methods
+- Results for KDE method
+(- Result from Bayesian method)
+
+Conclusions
+-----------
+
+- Benefits of each method and when each one is appropriate
+- Limitations of the methods (computational and otherwise)
+- Insights of usefulness of information theory in learning about
+  neural code. What is missing from the information theoretic approach?
+  Why is entropy not the right thing to study? How realistic are these 
+  experiments in understanding real-world behaviour of neurons?
+  What structure does the space of real-world stimuli have?
+  How meaningful are these values of mutual information
+
+
