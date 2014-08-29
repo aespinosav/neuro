@@ -15,16 +15,35 @@ class SpikeTrain():
         """
         Initialises the SpikeTrain object from a list of 
         spike times.
+        
+        Care must be taken if spike trains are empty. In that case,
+        it is necessary to create instances by specifying the start and 
+        end time of the stimuli.
         """
+        
+        if len(data) == 0:
+            self.empty = True # flag for spike trains with no spikes
+        else:
+            self.empty = False
+        
         if start_time is None:
-            self.start_time = int(data[0])
+            if not self.empty:
+                self.start_time = int(data[0])
+            else:
+                self.start_time = 0
         else:
             self.start_time = start_time
             
         if end_time is None:
-            self.end_time = int(data[-1] + 1.0)
+            if not self.empty:
+                self.end_time = int(data[-1] + 1.0)
+            else:
+                self.end_time = 1
         else:
             self.end_time = end_time       
+        
+        if len(data) == 0:
+            self.empty = True # flag for spike trains with no spikes
         
         self.spiking_times = np.array(data)
         self.letters = None
@@ -250,6 +269,9 @@ def new_neg_exp(x):
     #return d
     
 def distance(s1, s2, tau=0.03):
+    """
+    L2 distance between kernelised spike trains with the exponential kernel
+    """
 
     term1 = np.array([[ -abs(s1[i] - s1[j])/tau  for i in range(len(s1))] for j in range(len(s1))]).flatten()
     term2 = np.array([[ -abs(s2[i] - s2[j])/tau  for i in range(len(s2))] for j in range(len(s2))]).flatten()
@@ -281,7 +303,29 @@ def make_distance_matrix(spike_train_list, tau=0.03):
     matrix += matrix.T
     
     return matrix
+    
+def mi_from_dm(spike_train_list, distance_matrix, ns, nh):
+    """
+    Calculates the mutual information from the distance matrix and the responses
+    (using the kernel density method) taking into account nh nearest neighbours
+    
+    responses should be a 1x(ns . nt) array of spike trains (a flattened array)
+    """
+    
+    nearest_neighbours = np.array([r.argsort()[:nh] for r in distance_matrix])
+    
+    counts = []
+    for i in range(len(nearest_neighbours)):
+        c_i = 1
+        for j in nearest_neighbours[i]:
+            if (i != j and spike_train_list[i].start_time == spike_train_list[j].start_time):
+                c_i += 1 
+        counts.append(c_i)
+    counts = np.array(counts)
+    
+    I = sum(np.log2(counts*ns/float(nh))) / float(len(spike_train_list))
 
+    return I
     
 #class DistMatrix():
     #def __init__(self, list_of_spike_trains):
