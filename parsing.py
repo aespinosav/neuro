@@ -1,4 +1,5 @@
 import numpy as np
+from collections import Counter
 
 def split_into_runs(spike_data, number_of_runs, total_length):
     """
@@ -126,6 +127,14 @@ def word_distribution(words):
     return distribution_dict
 
 
+def merge_distributions(dist_list):
+    counters = map(Counter, dist_list)
+    new_dist = np.sum(counters)
+    
+    return new_dist
+    
+    
+
 
 def word_distributions_given_t(array_of_experiments):
     """
@@ -176,3 +185,4 @@ def calculate_entropy(distribution_dict):
     entropy = -sum(P*np.log2(P))
 
     return entropy
+
