@@ -327,6 +327,35 @@ def mi_from_dm(spike_train_list, distance_matrix, ns, nh):
 
     return I
     
+def raster_plot(spike_train, y_pos=1):
+    """
+    Plots a raster_plot of a spike train.
+    The y_pos is where the points will be aligned on the y axis.
+    """
+    spikes = spike_train.spiking_times
+    spike_points = []
+    for s in spikes:
+        point = np.array([s, y_pos])
+        spike_points.append(point)
+    spike_points = np.array(spike_points)
+    plt.plot(spike_points[:,0], spike_points[:,1], '.k')
+    
+def plot_trains_raster(spike_train_array):
+    """
+    Does a raster plot of many spike trains using the function 
+    raster plot.
+    """
+    N = len(spike_train_array)
+    
+    for i in range(N):
+        raster_plot(spike_train_array[i], i+1)
+        plt.ylim([0, N+0.5])
+    
+    
+    
+    #smallest_diff = min(spikes[1:] - spikes[:-1])
+    #t = np.arange(min(spikes), max(spikes) + smallest_diff ,smallest_diff)
+    
 #class DistMatrix():
     #def __init__(self, list_of_spike_trains):
         #self.ST = list_of_spike_trains
