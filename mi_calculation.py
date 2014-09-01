@@ -24,15 +24,16 @@ spike_times = np.loadtxt("./data/Sfly01508SpikeTimes.txt")
 #repeated_exp = split_into_runs(spike_times, 200, 1000)
 
 
-n_trials_list = range(10,51,5)
-n_stim_list = range(5,26,1)
-nh = 10
+n_trials_list = range(10,20,1)
+n_stim_list = range(5,26,5)
+
 
 
 
 Mutual_Information = []
 NT = []
 NS = []
+
 
 for n_trials in n_trials_list:
     for n_stim in n_stim_list:
