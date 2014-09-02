@@ -51,3 +51,6 @@ for i in range(len(st_tr)):
             character = '0'
         
         plt.text(0.003*j + 0.0015, i+1-0.3, character, horizontalalignment='center', verticalalignment='center', fontsize=14)
+
+plt.tight_layout()
+plt.savefig("discretisation_example_plot.pdf")
