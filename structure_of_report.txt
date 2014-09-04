@@ -4,13 +4,14 @@ Report Structure (neuroscience project)
 Introduction
 ------------
 
+- Sensory neurons
 - Neural Coding
 - Information theory applied to neural coding
 	- What can we learn about the brain from using information theory
 - Bandwidth of information in spike trains
 
-- Experiment description
-- Physiological explanation
+- Experiment description (shold this be in the intro or in a separate chapter??)
+- Physiological explanation???
 
 Spike Train Metrics
 -------------------
