@@ -284,7 +284,7 @@ def distance(s1, s2, tau=0.03):
     
     d = (sum(term1) + sum(term2) -2*sum(term3))/(2*tau) 
     
-    return d
+    return np.sqrt(d)
 
     
 def make_distance_matrix(spike_train_list, tau=0.03):
