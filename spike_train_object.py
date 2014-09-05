@@ -328,6 +328,30 @@ def mi_from_dm(spike_train_list, distance_matrix, ns, nh):
 
     return I
     
+def mi_from_dm_alt(spike_train_list, distance_matrix, ns, nh):
+    """
+    Calculates the mutual information from the distance matrix and the responses
+    (using the kernel density method) taking into account nh nearest neighbours.
+    
+    the way I think it should be working, because there might be a mistake in the 
+    other method.
+    """
+    
+    nr = len(spike_train_list)
+    nearest_neighbours = np.array([r.argsort()[:nh] for r in distance_matrix])
+    
+    near_to = [[j for j in range(n) if i in nearest_neighbours[j] ] for i in range(n)]
+    near_to_same_stim = [[n for n in near_to[j] if spike_train_list[n].start_time == spike_train_list[j].start_time] for j in range(n)]
+    
+    number_of_neighbourhoods = np.array([len(l) for l in near_to])
+    number_of_neighbourhoods_same_stim = np.array([len(l) for l in near_to_same_stim])
+    
+    I = (1.0/len(spike_train_list))*sum( np.log2(ns*number_of_neighbourhoods_same_stim/nh) )
+    
+    return I
+    
+    
+    
 def raster_plot(spike_train, y_pos=1):
     """
     Plots a raster_plot of a spike train.
