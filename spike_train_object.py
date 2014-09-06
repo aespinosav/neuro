@@ -305,30 +305,47 @@ def make_distance_matrix(spike_train_list, tau=0.03):
     
     return matrix
     
-def mi_from_dm(spike_train_list, distance_matrix, ns, nh):
+def mi_from_dm(distance_matrix, ns, nh, spike_train_list=None):
     """
     Calculates the mutual information from the distance matrix and the responses
     (using the kernel density method) taking into account nh nearest neighbours
     
     responses should be a 1x(ns . nt) array of spike trains (a flattened array)
+    If None is passed then it is assumed that the distance matrix is given in an
+    ordered way: r(trial_1)  r(trial_2) ...
     """
+    
+    nr = len(distance_matrix)
     
     nearest_neighbours = np.array([r.argsort()[:nh] for r in distance_matrix])
     
-    counts = []
-    for i in range(len(nearest_neighbours)):
-        c_i = 1
-        for j in nearest_neighbours[i]:
-            if (i != j and spike_train_list[i].start_time == spike_train_list[j].start_time):
-                c_i += 1 
-        counts.append(c_i)
-    counts = np.array(counts)
+    if spike_train_list is not None:
     
-    I = sum(np.log2(counts*ns/float(nh))) / float(len(spike_train_list))
+        counts = []
+        for i in range(len(nearest_neighbours)):
+            c_i = 1
+            for j in nearest_neighbours[i]:
+                if (i != j and spike_train_list[i].start_time == spike_train_list[j].start_time):
+                    c_i += 1 
+            counts.append(c_i)
+        counts = np.array(counts)
+    
+    else:
+        
+        counts = []
+        for i in range(len(nearest_neighbours)):
+            c_i = 1
+            for j in nearest_neighbours[i]:
+                if (i != j and abs(i - j)%ns==0 ):
+                    c_i += 1 
+            counts.append(c_i)
+        counts = np.array(counts)        
+        
+    I = sum(np.log2(counts*ns/float(nh))) / float(nr)
 
     return I
     
-def mi_from_dm_alt(spike_train_list, distance_matrix, ns, nh):
+def mi_from_dm_alt(distance_matrix, ns, nh, spike_train_list=None):
     """
     Calculates the mutual information from the distance matrix and the responses
     (using the kernel density method) taking into account nh nearest neighbours.
@@ -337,20 +354,25 @@ def mi_from_dm_alt(spike_train_list, distance_matrix, ns, nh):
     other method.
     """
     
-    nr = len(spike_train_list)
+    nr = len(distance_matrix)
     nearest_neighbours = np.array([r.argsort()[:nh] for r in distance_matrix])
     
-    near_to = [[j for j in range(n) if i in nearest_neighbours[j] ] for i in range(n)]
-    near_to_same_stim = [[n for n in near_to[j] if spike_train_list[n].start_time == spike_train_list[j].start_time] for j in range(n)]
+    near_to = [[j for j in range(nr) if i in nearest_neighbours[j] ] for i in range(nr)]
+    
+    if spike_train_list is not None:
+        near_to_same_stim = [[n for n in near_to[j] if spike_train_list[n].start_time == spike_train_list[j].start_time] for j in range(nr)]
+    else:
+        near_to_same_stim = [[n for n in near_to[j] if abs(n-j)%ns==0 ] for j in range(nr)]
     
     number_of_neighbourhoods = np.array([len(l) for l in near_to])
     number_of_neighbourhoods_same_stim = np.array([len(l) for l in near_to_same_stim])
     
-    I = (1.0/len(spike_train_list))*sum( np.log2(ns*number_of_neighbourhoods_same_stim/nh) )
+    I = (1.0/nr)*sum( np.log2(ns*number_of_neighbourhoods_same_stim/nh) )
     
     return I
     
-    
+#I should be able to calculate MI just from the distance_matrix as long as it is ordered in the correct way.....
+#
     
 def raster_plot(spike_train, y_pos=1):
     """
