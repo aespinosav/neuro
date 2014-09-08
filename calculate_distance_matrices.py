@@ -6,15 +6,15 @@ import numpy as np
 spike_times = np.loadtxt("./data/Sfly01508SpikeTimes.txt")
 
 n_trials_list = range(10,20,1)
-n_stim_list = range(5,26,5)
+n_stim_list = range(10,46,5)
 
 print "\nWill calculate {} Distance Matrices...".format(len(n_trials_list)*len(n_stim_list))
 
-i = 1
+count = 1
 for n_trials in n_trials_list:
     for n_stim in n_stim_list:
         
-        print "\nLoop ", i
+        print "\nLoop ", count
         print "nt = {}; ns = {}\n".format(n_trials, n_stim)
         
         
@@ -35,4 +35,4 @@ for n_trials in n_trials_list:
         
         np.savetxt(filename, DM)
         
-        i+=1
+        count+=1
