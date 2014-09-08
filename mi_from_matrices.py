@@ -17,13 +17,19 @@ a natural choice (at least for the data we have at hand)
 from spike_train_object import *
 import os
 import re
+from sys import argv
 
 
 #We must make sure the directory contains only
 #the files we want (distance matrices)
 
+
+
+
+#directory = "./data/dist_matrices"
+directory  = argv[1] #get directory name from command-line arguments
+
 data_file_name = "mutual_info_kde.dat"
-directory = "./data/dist_matrices"
 files_list = os.listdir(directory) #this directory must exis, of course...
 
 NS = []
