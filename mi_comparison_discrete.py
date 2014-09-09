@@ -55,7 +55,7 @@ for n_trials in trials_range:
     responses_trains = responses_trains.flatten()
     #do the calculations for KDE
     DM = make_distance_matrix(responses_trains)
-    I_kernel_method = mi_from_dm(responses_trains, DM, n_stim, nh)
+    I_kernel_method = mi_from_dm(DM, n_stim, nh, responses_trains)
 
     #Sort spikes into words
     responses_letters = [convert_to_letters(repeated_exp_used[i], letter_length, 0, 5) for i in range(len(repeated_exp_used))]
