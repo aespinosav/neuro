@@ -10,7 +10,7 @@ directory = "/space/ae13414/neuro_data/dist_matrices3/"
 
 spike_times = np.loadtxt("./data/Sfly01508SpikeTimes.txt")
 
-n_trials_list = range(50,101,10)
+n_trials_list = range(60,101,10)
 n_stim_list = range(10,101,10)
 
 print "\nWill calculate {} Distance Matrices...".format(len(n_trials_list)*len(n_stim_list))

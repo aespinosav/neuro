@@ -20,7 +20,7 @@ We will make the word lenghth as close to 30 ms as possible.
 
 #n_trials = 5
 
-trials_range = range(3,51)
+trials_range = range(10,71,2)
 
 n_stim = 166
 t_stim = word_length = 5.0/n_stim
@@ -80,4 +80,9 @@ for n_trials in trials_range:
     Ikern.append(I_kernel_method)
     
 data = np.column_stack((NTrials, NStim, Nh, TStim, LPW, Stot, Snoise, Ibin, Ikern))
-np.savetxt("mutual_info_comparison.dat", data)
+
+header = '#n_s\tn_t\tmax_information\tinformation_conor\tinformation_alonso\n'
+
+with open("mutual_info_comparison.dat", 'w') as f:
+    f.write(header)
+    np.savetxt(f, data)
