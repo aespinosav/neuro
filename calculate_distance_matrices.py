@@ -2,10 +2,15 @@ from parsing import *
 from spike_train_object import *
 import numpy as np
 
+#This script should probably be accepting command line arguments to avoid me having to
+#change this file over and over and over again... I should possibly also be using
+#sumatra or some other system like it.
+
+directory = "/space/ae13414/neuro_data/dist_matrices3/"
 
 spike_times = np.loadtxt("./data/Sfly01508SpikeTimes.txt")
 
-n_trials_list = range(10,101,10)
+n_trials_list = range(50,101,10)
 n_stim_list = range(10,101,10)
 
 print "\nWill calculate {} Distance Matrices...".format(len(n_trials_list)*len(n_stim_list))
@@ -33,6 +38,6 @@ for n_trials in n_trials_list:
         
         filename = "dist_matrix_ns_{0}_nt_{1}.dat".format(n_stim, n_trials)
         
-        np.savetxt(filename, DM)
+        np.savetxt(directory + filename, DM)
         
         count+=1
