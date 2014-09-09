@@ -35,7 +35,7 @@ Comparison on a data set (from seminal paper) (RESULTS)
 
 - Results for discrete methods
 - Results for KDE method
-(- Result from Bayesian method)
+(- Result from Bayesian method, or, looking for biases)
 
 Conclusions
 -----------
