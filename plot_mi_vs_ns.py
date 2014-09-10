@@ -32,7 +32,7 @@ nt_list.sort()
 data_for_lines = np.array([[d for d in data if d[1]==nt] for nt in nt_list])
 data_for_lines = np.array([ d[d[:,0].argsort()] for d in data_for_lines])
 
-for nt in nt_list:
+for nt in nt_list[-20:]:
 
     indx = nt_list.index(nt)
     label="$n_t =$ {}".format(int(nt))
@@ -43,4 +43,6 @@ for nt in nt_list:
     
 #plt.legend(loc='lower left', fancybox=True)
 plt.xlabel("$n_s$")
-plt.ylabel("Mutual Information/ Max Information")
+plt.ylabel("$I(R;S)/I(S)")
+
+plt.savefig("mi_vs_ns.pdf")

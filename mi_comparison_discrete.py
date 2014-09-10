@@ -81,7 +81,7 @@ for n_trials in trials_range:
     
 data = np.column_stack((NTrials, NStim, Nh, TStim, LPW, Stot, Snoise, Ibin, Ikern))
 
-header = '#n_s\tn_t\tmax_information\tinformation_conor\tinformation_alonso\n'
+header = '#n_t\tn_stim\tnh\tTstim\tLPW\tStot\tSnoise\tIbin\tIkern\n'
 
 with open("mutual_info_comparison.dat", 'w') as f:
     f.write(header)

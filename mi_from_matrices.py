@@ -38,7 +38,13 @@ I_C = []
 I_A = []
 I_MAX = []
 
+print "Will process {} distance matrices... \n".format(len(files_list))
+
+counter = 0
+
 for f_name in files_list:
+    counter += 1
+    print "Processing matrix {}...\n".format(counter)
     
     path = directory+'/'+f_name
     

@@ -43,3 +43,5 @@ for ns in ns_list[-5:]:
 plt.legend(loc='lower left', fancybox=True)
 plt.xlabel("$n_t$")
 plt.ylabel("Mutual Information [bits]")
+
+plt.savefig("mi_vs_nt.pdf")
