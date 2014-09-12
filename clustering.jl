@@ -3,6 +3,30 @@ using Clustering
 directory = ARGS[1]
 files = readdir(directory)
 
+function assigned_class(i, ns, km)
+    cluster = km.assignments[i]
+    cluster_stim = km.medoids[cluster]%ns + 1
+end
+
+function real_class(i, ns)
+    stim = i%ns + 1
+end
+
+function conf_matrix(km)
+
+    ns = length(km.medoids)
+    
+    matrix = zeros(Int, ns, ns)
+    
+        for i in range(1,length(km.assignments))
+            rc = real_class(i, ns)
+            ac = assigned_class(i, ns, km)
+            
+            matrix[rc, ac] += 1
+        end
+        
+    return matrix
+end
 
 for f in files
 
@@ -24,11 +48,16 @@ for f in files
     
     km = kmedoids(dist_matrix, target_cluster_number, init=seeds)
     
-    println("k = ")
-    print(ns)
-    println(length(km.counts))
-    print(":")
-    print(km.counts)
-    print("\n")
+    confusion_matrix = conf_matrix(km)
+    
+    
+    
+    str1 = "ns = $ns; nt = $nt\nClusters match: $(length(km.counts)==ns)"
+    println(str1)
+    println(km.counts, "\n")
+    println("Confusion Matrix:\n", confusion_matrix )
+    println(km.assignments)
+    
+
     
 end
