@@ -355,7 +355,7 @@ def mi_from_dm_alt(distance_matrix, ns, nh, spike_train_list=None):
     """
     
     nr = len(distance_matrix)
-    nearest_neighbours = np.array([r.argsort()[:nh] for r in distance_matrix])
+    nearest_neighbours = np.array([[i] + distance_matrix[i].argsort()[1:nh].tolist() for i in range(nr)])
     
     near_to = [[j for j in range(nr) if i in nearest_neighbours[j] ] for i in range(nr)]
     
@@ -367,7 +367,7 @@ def mi_from_dm_alt(distance_matrix, ns, nh, spike_train_list=None):
     number_of_neighbourhoods = np.array([len(l) for l in near_to])
     number_of_neighbourhoods_same_stim = np.array([len(l) for l in near_to_same_stim])
     
-    I = (1.0/nr)*sum( np.log2(ns*number_of_neighbourhoods_same_stim/nh) )
+    I = (1.0/nr)*sum( np.log2((ns*number_of_neighbourhoods_same_stim)/float(nh)) )
     
     return I
     
