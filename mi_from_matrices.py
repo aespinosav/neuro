@@ -27,9 +27,12 @@ from sys import argv
 
 
 #directory = "./data/dist_matrices"
-directory  = argv[1] #get directory name from command-line arguments
+directory  = argv[1] #get directory of data name from command-line arguments
+directory_to_save = argv[2] #directory to save file to
 
 data_file_name = "mutual_info_kde.dat"
+data_file_name = directory_to_save + "/" + data_file_name
+
 files_list = os.listdir(directory) #this directory must exis, of course...
 
 NS = []
@@ -44,7 +47,7 @@ counter = 0
 
 for f_name in files_list:
     counter += 1
-    print "Processing matrix {}...\n".format(counter)
+    print "Processing matrix {}:\n".format(counter)+f_name+"...\n"
     
     path = directory+'/'+f_name
     
