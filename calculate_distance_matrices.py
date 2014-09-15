@@ -1,12 +1,15 @@
 from parsing import *
 from spike_train_object import *
 import numpy as np
+from sys import argv
 
 #This script should probably be accepting command line arguments to avoid me having to
 #change this file over and over and over again... I should possibly also be using
 #sumatra or some other system like it.
 
-directory = "/space/ae13414/neuro_data/dist_matrices3/"
+#directory = "/space/ae13414/neuro_data/dist_matrices3/"
+directory = argv[1] #directory to save distance matrices to should be passed first
+
 
 spike_times = np.loadtxt("./data/Sfly01508SpikeTimes.txt")
 
