@@ -44,19 +44,19 @@ for f in files
     
     target_cluster_number = ns
     
-    seeds = [i for i=1:nt:nr]
+    seeds = Int[i for i=1:ns]
     
-    km = kmedoids(dist_matrix, target_cluster_number, init=seeds)
+    km = kmedoids(dist_matrix, target_cluster_number)
     
     confusion_matrix = conf_matrix(km)
     
     
     
-    str1 = "ns = $ns; nt = $nt\nClusters match: $(length(km.counts)==ns)"
+    str1 = "ns = $ns; nt = $nt; nr = $nr\nClusters match: $(length(km.counts)==ns)"
     println(str1)
     println(km.counts, "\n")
-    println("Confusion Matrix:\n", confusion_matrix )
-    println(km.assignments)
+    println("Confusion Matrix:\n", confusion_matrix, "\n" )
+    #println(km.assignments)
     
 
     
