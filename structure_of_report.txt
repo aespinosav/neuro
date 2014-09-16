@@ -37,6 +37,7 @@ Comparison on a data set (from seminal paper) (RESULTS)
 - Results for KDE method
 (- Result from Bayesian method, or, looking for biases)
 - Problems arising from applying KDE method (clustering etc...)
+    -challenges of applying to real data (the 0 glob)
 
 Conclusions
 -----------
