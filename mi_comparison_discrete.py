@@ -20,7 +20,9 @@ We will make the word lenghth as close to 30 ms as possible.
 
 #n_trials = 5
 
-trials_range = range(10,71,2)
+directory = "./data/comparison_data/"
+
+trials_range = range(10,71,5)
 
 n_stim = 166
 t_stim = word_length = 5.0/n_stim
@@ -41,6 +43,8 @@ Ikern = []
 
 for n_trials in trials_range:
     
+    f_name = "dist_matrix_ns_166_nt_{}.dat".format(n_trials)
+    
     nh = n_trials
 
     #Import data and separate into individual experiment runs
@@ -55,6 +59,7 @@ for n_trials in trials_range:
     responses_trains = responses_trains.flatten()
     #do the calculations for KDE
     DM = make_distance_matrix(responses_trains)
+    np.savetxt(directory+f_name, DM)
     I_kernel_method = mi_from_dm(DM, n_stim, nh, responses_trains)
 
     #Sort spikes into words
@@ -86,3 +91,6 @@ header = '#n_t\tn_stim\tnh\tTstim\tLPW\tStot\tSnoise\tIbin\tIkern\n'
 with open("mutual_info_comparison.dat", 'w') as f:
     f.write(header)
     np.savetxt(f, data)
+    
+print "Distance matrices saved in: {}".format(directory)
+print "Data file with I: mutual_info_comparison.dat".format()
