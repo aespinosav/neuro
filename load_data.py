@@ -21,9 +21,9 @@ def load_spike_trains(directory, ns, nt):
     return responses_trains.flatten()
     
 
-def import_stuff(f_name):
+def import_stuff(f_name, directory_of_dist_mat):
     
-    directory_of_dist_mat = "/users/ae13414/Documents/neuro/data/dist_matrices3/"
+    #directory_of_dist_mat = "/users/ae13414/Documents/neuro/data/dist_matrices3/"
     directory_of_spike_data = "/users/ae13414/Documents/neuro/data/"
     
     seq = filter(None, re.split("[_.]", f_name))
@@ -36,7 +36,7 @@ def import_stuff(f_name):
     
     spike_trains = load_spike_trains(directory_of_spike_data, ns, nt)
     
-    return spike_trains, dm
+    return spike_trains, dm, nr, ns, nt
     
     
 def trains_in_glob(spike_trains):
