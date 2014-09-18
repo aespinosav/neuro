@@ -19,7 +19,7 @@ def mi_from_dm(distance_matrix, ns, nh, spike_train_list=None):
 
         counts = []
         for i in range(len(nearest_neighbours)):
-            c_i = 0 # counts itself
+            c_i = 0
             
             if i not in members_of_glob:
                 for j in nearest_neighbours[i]:
@@ -68,6 +68,7 @@ def mi_from_dm_alt(distance_matrix, ns, nh, spike_train_list=None):
     """
     
     
+    
     nr = len(distance_matrix)
     nt = nr/ns
     nearest_neighbours = np.array([r.argsort()[:nh] for r in distance_matrix])
@@ -80,16 +81,26 @@ def mi_from_dm_alt(distance_matrix, ns, nh, spike_train_list=None):
     glob_comp = glob_composition(spike_train_list, ns, nt, nh)
     
     counts = []
+    counted_glob = False #set a flag for later use
     if spike_train_list is not None:
         for i in range(len(near_to)):
             c_i = 0
+                  
             if i not in members_of_glob:
                 for j in near_to[i]:
                     if j not in members_of_glob and spike_train_list[i].start_time == spike_train_list[j].start_time:
                         c_i += 1
                     else:
-                        break
-            else:
+                        if not counted_glob: #this should only really happen if glob has a small number of members...
+                            f_i = glob_comp[i]/float(sum(glob_comp.values()))
+                            g_i = f_i - 1.0/float(sum(glob_comp.values()))
+                            c_i += (nh - c_i)*g_i
+                            
+                            counted_glob = True
+                        else:
+                            pass
+                            
+            else: #If i is in the glob...
                 f_i = glob_comp[i]/float(sum(glob_comp.values()))
                 g_i = f_i - 1.0/float(sum(glob_comp.values()))
                 c_i = 1 + (nh - 1)*g_i
