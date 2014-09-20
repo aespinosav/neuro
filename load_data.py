@@ -3,7 +3,7 @@ from spike_train_object import *
 from parsing import *
 from collections import Counter
 import re
-
+import heapq as hq
 
 def load_spike_trains(directory, ns, nt):
     
