@@ -1,3 +1,7 @@
+from parsing import *
+from spike_train_object import *
+import numpy as np
+
 def mi_from_dm(distance_matrix, ns, nh, spike_train_list=None):
     """
     Calculates the mutual information from the distance matrix and the responses

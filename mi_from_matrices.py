@@ -27,10 +27,10 @@ from sys import argv
 
 
 #directory = "./data/dist_matrices"
-directory  = argv[1] #get directory of data name from command-line arguments
+directory  = argv[1] #get directory of data 
 directory_to_save = argv[2] #directory to save file to
 
-data_file_name = "mutual_info_kde.dat"
+data_file_name = "mutual_info_kde_final_final.dat"
 data_file_name = directory_to_save + "/" + data_file_name
 
 files_list = os.listdir(directory) #this directory must exis, of course...
@@ -59,7 +59,7 @@ for f_name in files_list:
     
 
     dm = np.loadtxt(path)
-    dm = np.sqrt(dm) #once new matrix files are used this line should be removed
+    #dm = np.sqrt(dm) #once new matrix files are used this line should be removed
     
     I_conor = mi_from_dm(dm, ns, nt)
     I_alonso = mi_from_dm_alt(dm, ns, nt)

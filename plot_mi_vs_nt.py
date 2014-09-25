@@ -35,8 +35,8 @@ for ns in ns_list[-5:]:
 
     indx = ns_list.index(ns)
     label="$n_s =$ {}".format(int(ns))
-    INFO = data_for_lines[indx,:,3]
-    NT = data_for_lines[indx,:,1]
+    INFO = data_for_lines[indx][:,3]
+    NT = data_for_lines[indx][:,1]
         
     plt.plot(NT, INFO, label=label)
     

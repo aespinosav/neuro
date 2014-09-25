@@ -29,20 +29,20 @@ data = data[data[:,1].argsort()]
 nt_list = list(set([n for n in data[:,1]]))
 nt_list.sort()
 
-data_for_lines = np.array([[d for d in data if d[1]==nt] for nt in nt_list])
+data_for_lines = np.array([np.array([d for d in data if d[1]==nt]) for nt in nt_list])
 data_for_lines = np.array([ d[d[:,0].argsort()] for d in data_for_lines])
 
 for nt in nt_list[-20:]:
 
     indx = nt_list.index(nt)
     label="$n_t =$ {}".format(int(nt))
-    INFO = data_for_lines[indx,:,3]/data_for_lines[indx,:,2]
-    NS = data_for_lines[indx,:,0]
+    INFO = data_for_lines[indx][:,3]/data_for_lines[indx][:,2]
+    NS = data_for_lines[indx][:,0]
         
     plt.plot(NS, INFO, label=label)
     
 #plt.legend(loc='lower left', fancybox=True)
 plt.xlabel("$n_s$")
-plt.ylabel("$I(R;S)/I(S)")
+plt.ylabel("$I(R;S)/H(S)$")
 
 plt.savefig("mi_vs_ns.pdf")
